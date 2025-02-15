@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Códigos Postales</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Buscador de Códigos Postales</h1>
+        <input type="text" id="search" placeholder="Ingresa un número de sector...">
+        <button onclick="buscarSector()">Buscar</button>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sector</th>
+                    <th>Código Postal</th>
+                </tr>
+            </thead>
+            <tbody id="results">
+                <!-- Resultados aquí -->
+            </tbody>
+        </table>
+    </main>
+    <script>
+        // Datos extraídos del archivo proporcionado
+        const data = [
+            { sector: "122", codigo_postal: "0" },
+            { sector: "76", codigo_postal: "7" },
+            { sector: "2", codigo_postal: "83" },
+            { sector: "174", codigo_postal: "114" },
+            { sector: "201", codigo_postal: "170" },
+            { sector: "13", codigo_postal: "640" },
+            { sector: "14", codigo_postal: "921" },
+            { sector: "207", codigo_postal: "950" },
+            { sector: "166", codigo_postal: "1188" },
+            { sector: "42", codigo_postal: "1930" }
+        ];
+
+        function buscarSector() {
+            const searchValue = document.getElementById("search").value.trim();
+            const resultsTable = document.getElementById("results");
+            resultsTable.innerHTML = ""; // Limpiar tabla
+            
+            const filteredData = data.filter(item => item.sector.toString() === searchValue);
+            
+            if (filteredData.length === 0) {
+                resultsTable.innerHTML = "<tr><td colspan='2'>No se encontraron resultados</td></tr>";
+            } else {
+                filteredData.forEach(item => {
+                    const row = `<tr><td>${item.sector}</td><td>${item.codigo_postal}</td></tr>`;
+                    resultsTable.innerHTML += row;
+                });
+            }
+        }
+    </script>
+</body>
+</html>
