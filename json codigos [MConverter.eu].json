@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Códigos Postales</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Buscador de Códigos Postales</h1>
+        <input type="text" id="search" placeholder="Ingresa un código postal...">
+        <button onclick="buscarCP()">Buscar</button>
+    </header>
+    <main>
+        <p id="mensaje"></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Código Postal</th>
+                    <th>Zonas Asociadas</th>
+                </tr>
+            </thead>
+            <tbody id="results"></tbody>
+        </table>
+    </main>
+    <script>
+        let data = {};
+
+        // Cargar datos desde un archivo JSON externo
+        fetch('cps_zonas.json')
+            .then(response => response.json())
+            .then(json => data = json)
+            .catch(error => console.error('Error cargando los datos:', error));
+
+        function buscarCP() {
+            const searchValue = document.getElementById("search").value.trim();
+            const resultsTable = document.getElementById("results");
+            const mensaje = document.getElementById("mensaje");
+            resultsTable.innerHTML = "";
+            mensaje.innerHTML = "";
+            
+            if (data[searchValue]) {
+                data[searchValue].forEach(zona => {
+                    resultsTable.innerHTML += `<tr><td>${searchValue}</td><td>${zona}</td></tr>`;
+                });
+                mensaje.innerHTML = `Si perteneces a cualquiera de estas zonas (${data[searchValue].join(", ")}), puedes hacer inicios en este código postal.`;
+            } else {
+                resultsTable.innerHTML = "<tr><td colspan='2'>No se encontraron resultados</td></tr>";
+            }
+        }
+    </script>
+</body>
+</html>
